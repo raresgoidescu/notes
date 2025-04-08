@@ -84,33 +84,36 @@ $T(n) = 2T(\dfrac{n}{2}) + \theta(n)$
 
 ## Reminder
 
-### Master theorem
+### Master Theorem
 
-The Master Theorem provides a way to solve recurrence relations of the form $ T(n) = aT(\frac{n}{b}) + f(n) $, which is common in divide-and-conquer algorithms.
+The Master Theorem provides a way to solve recurrence relations of the form `T(n) = aT(n/b) + f(n)`, which is common in divide-and-conquer algorithms.
 
-Let $ T(n) $ be a recurrence relation of the form:
-$ T(n) = aT\left(\frac{n}{b}\right) + f(n) $
+Let `T(n)` be a recurrence relation of the form:  
+`T(n) = aT(n/b) + f(n)`  
 where:
-- $ a \geq 1 $ (number of subproblems)
-- $ b > 1 $ (size division factor)
-- $ f(n) $ (cost of divide/combine steps)
+- `a ≥ 1` (number of subproblems)
+- `b > 1` (size division factor)
+- `f(n)` (cost of divide/combine steps)
 
 #### Case 1
-If $ f(n) = O(n^{\log_b a - \epsilon}) $ for some $ \epsilon > 0 $, then: $ T(n) = \Theta(n^{\log_b a}) $
+If `f(n) = O(n^log_b a - ε)` for some `ε > 0`, then:  
+`T(n) = Θ(n^log_b a)`
 
 #### Case 2
-If $ f(n) = \Theta(n^{\log_b a} \log^k n) $, then: $ T(n) = \Theta\left(n^{\log_b a} \log^{k+1} n\right) $
+If `f(n) = Θ(n^log_b a * log^k n)`, then:  
+`T(n) = Θ(n^log_b a * log^{k+1} n)`
 
 **Edge cases:**
-- When $ k = 0 $ (standard form): $ T(n) = \Theta(n^{\log_b a} \log n) $
-- When $ k = -1 $: $ T(n) = \Theta(n^{\log_b a} \log \log n) $
-- When $ k \leq -2 $: $ T(n) = \Theta(n^{\log_b a}) $
+- When `k = 0` (standard form): `T(n) = Θ(n^log_b a * log n)`
+- When `k = -1`: `T(n) = Θ(n^log_b a * log log n)`
+- When `k ≤ -2`: `T(n) = Θ(n^log_b a)`
 
 #### Case 3
-If $ f(n) = \Omega(n^{\log_b a + \epsilon}) $ for some $ \epsilon > 0 $, and the regularity condition $ af(n/b) \leq cf(n) $ holds for some $ c < 1 $, then: $ T(n) = \Theta(f(n)) $
+If `f(n) = Ω(n^log_b a + ε)` for some `ε > 0`, and the regularity condition `a f(n/b) ≤ c f(n)` holds for some `c < 1`, then:  
+`T(n) = Θ(f(n))`
 
 #### Intuition
-The theorem compares $ f(n) $ to $ n^{\log_b a} $:
-- Case 1: $ f(n) $ is polynomially "smaller" than $ n^{\log_b a} $: Leaves dominate 
-- Case 2: $ f(n) $ is polynomially "equal" than $ n^{\log_b a} $: Balanced work
-- Case 3: $ f(n) $ is polynomially "larger" than $ n^{\log_b a} $: Root dominates
+The theorem compares `f(n)` to `n^log_b a`:
+- **Case 1**: `f(n)` is polynomially *smaller* than `n^log_b a`: *Leaves dominate*
+- **Case 2**: `f(n)` is polynomially *equal* to `n^log_b a`: *Balanced work*
+- **Case 3**: `f(n)` is polynomially *larger* than `n^log_b a`: *Root dominates*
