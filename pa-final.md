@@ -129,8 +129,6 @@ def DFS(G):
 - Optimalitate: NU
 - Parcurge tot graful? DA
 
----
-
 ### BFS (Coadă - FIFO)
 
 [?] Inducție optimalitate (C5, Slide 25)
@@ -182,23 +180,15 @@ def BFS(source, G):
         - c[neigh[src]] = 1,
         - c[neigh[neigh[src]]] = 0, ...
 
----
-
 ### DFS Iterativ (IDDFS - Iterative Deepening DFS)
 - Explorăm iterativ graful în adâncime
 - Combină beneficii BFS & DFS
 - Aplicare DFS cu adâncime limitată, care crește iterativ (evită cazuri în care o cale poate fi foarte lungă)
 
----
-
 ### După "optim"
 - Coadă de priorități
 
----
-
 ### Probabiliste (Monte Carlo)
-
----
 
 ## Sortare topologică
 
