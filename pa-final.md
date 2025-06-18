@@ -1000,6 +1000,7 @@ def bfs(G, s, t):
 
 **Complexitate**: `O(|V|^3)` în implementări simple, dar poate ajunge la `O(|V|^2 * |E|)` sau chiar mai bine.
 
+**Altele**:
 - Analogie: simularea curgerii lichidului intr-un sistem de conducte ce leaga noduri aflate la diverse inaltimi.
 - Sursa = inaltime = |V|
 - Calea cea mai lunga = |V| - 1
@@ -1009,15 +1010,12 @@ def bfs(G, s, t):
     - nu se mai conserva fluxul (datorita inaltimilor asociate nodurilor).
     - un nod poate fi supraîncărcat cu flux (exces de flux).
 - Pentru ca `(u, v)` sa fie arc rezidual, `h(u) < h(v) + 1`.
-
 - Exista un preflux initial in retea obtinut prin incarcarea la capacitate maxima a tuturor conductelor care ies din sursa.
 - Este permisa acumularea de exces de flux - `e(u)` - la noduri intermediare (adica in afara de sursa si destinatie).
     - Excesul de flux poate fi stocat intr-un 'rezervor' al nodului.
 - Cand un nod `u` are flux disponibil in rezervor si o conducta spre un alt nod `v`, care nu este incarcata complet (are capacitate reziduala pozitiva), se poate pompa fluxul in conducta respectiva.
     - Deci inaltimea nodului `u` trebuie sa fie mai mare decat inaltimea nodului `v` (pentru a permite curgerea).
-
 - [cp-algorithms.com](https://cp-algorithms.com/graph/push-relabel.html)
-
 
 ```python
 def push_relabel(G, s, t):
