@@ -2,6 +2,7 @@
 
 ## Cuprins
 
+- [Programare Dinamica]
 - [Concepte de Bază](#concepte-de-bază)
     - [Tipuri de Grafuri](#tipuri-de-grafuri)
     - [Notații și Terminologie](#notații-și-terminologie)
@@ -34,6 +35,35 @@
     - [Algoritmul Edmonds-Karp](#algoritmul-edmonds-karp)
     - [Algoritmul Push-Relabel (Pompare-Preflux)](#algoritmul-push-relabel-pompare-preflux)
 - [Tips & Tricks](#tips--tricks)
+
+## Programare Dinamică
+
+**Recurente comune**:
+- Urcatul scarilor: In cate feluri se poate urca o scara care are N trepte, daca la fiecare pas se pot face 1, 2 sau 3 pași?
+    - `ways(n) = ways(n-1) + ways(n-2) + ways(n-3)`
+    - `ways(0) = 1` (o singură modalitate de a nu face nimic)
+    - `ways(1) = 1` (o singură modalitate de a urca o treaptă)
+    - `ways(2) = 2` (două modalități: 1+1 sau 2)
+    - `ways(3) = 4` (patru modalități: 1+1+1, 1+2, 2+1, 3)
+- Problema rucsacului: Avem un rucsac cu o capacitate maximă și o listă de obiecte, fiecare cu o greutate și o valoare. Cum putem maximiza valoarea totală a obiectelor din rucsac? Nu se pot împărți obiectele.
+    - `dp[i][j]` = valoarea maximă pentru primele `i` obiecte și capacitatea `j`.
+    - `dp[i][j] = dp[i-1][j]` (nu luăm obiectul i) sau `dp[i][j] = dp[i-1][j-w[i]] + v[i]` (luăm obiectul i, dacă se încadrează).
+- Rod Cutting: Care este cea mai eficientă metodă de a secționa o sfoară de dimensiunea N, pentru a maximiza prețul total al secțiunilor vândute?
+    - `dp[0] = 0` (nu putem vinde nimic dintr-o sfoară de lungime 0)
+    - `dp[i] = max(v[j] + dp[i-j])` pentru toate `j` posibile, unde `v[j]` este prețul pentru o secțiune de lungime `j`.
+- Subsir crescător maxim: Avem un șir de numere și vrem să găsim lungimea celui mai lung subsir crescător.
+    - `dp[i]` = lungimea celui mai lung subsir crescător care se termină la poziția `i`.
+    - `dp[i] = max(dp[j] + 1)` pentru toate `j < i` unde `arr[j] < arr[i]`.
+- Cel mai lung subșir comun: Avem două șiruri și vrem să găsim lungimea celui mai lung subșir comun.
+    - `dp[i][j]` = lungimea celui mai lung subșir comun pentru primele `i` caractere din primul șir și primele `j` caractere din al doilea șir.
+    - `dp[i][j] = dp[i-1][j-1] + 1` dacă `s1[i-1] == s2[j-1]`, altfel `dp[i][j] = max(dp[i-1][j], dp[i][j-1])`.
+- Distanta Levenshtein: Măsoară diferența dintre două șiruri de caractere, numărând numărul minim de operații necesare pentru a transforma un șir în altul (inserare, ștergere, substituție).
+    - `dp[i][j]` = distanța Levenshtein între primele `i` caractere din primul șir și primele `j` caractere din al doilea șir.
+    - `dp[i][j] = dp[i-1][j] + 1` (ștergere), `dp[i][j-1] + 1` (inserare), sau `dp[i-1][j-1] + cost` (substituție, unde `cost = 0` dacă caracterele sunt egale, altfel `cost = 1`).
+- Parantezare optima de matrice: Avem o secvență de matrice și vrem să găsim ordinea optimă de înmulțire pentru a minimiza numărul total de operații.
+    - `dp[i][j]` = costul minim pentru a înmulți matricele de la `i` la `j`.
+    - `dp[i][j] = min(dp[i][k] + dp[k+1][j] + cost(i, k, j))` pentru toate `k` între `i` și `j-1`, unde `cost(i, k, j)` este costul de înmulțire a matricelor.
+- Arbori optimi de cautare (AOC): 
 
 ## Concepte de Bază
 
