@@ -880,8 +880,75 @@ def ford_fulkerson(G(V, E), s, t):
 ```
 
 - Complexitate: O(fmax * m), unde fmax este fluxul maxim și m este numărul de arce din graf.
+- Daca apar capacitati rationale, se pot scala la intregi.
+- Daca apar capacitati irationale, s-ar putea sa nu se termine niciodata.
+- Timpul este nepolinomial fata de marimea intrarii.
+- Alte probleme:
+    - Se folosesc cai cu capacitate mica
+    - Se pun fluxuri pe mai multe arce decat este nevoie
+- Imbunatatiri:
+    - Se aleg caile reziduale cu capacitate maxima - complexitatea va depinde in continuare de fmax si de valoare capacitatilor.
+    - Se aleg caile reziduale cele mai scurte - in acest caz complexitatea nu mai depinde de fmax, ci doar de numarul de arce (e.g.: [Edmonds-Karp](#edmonds-karp): identificarea cailor reziduale minime prin aplicarea unui BFS).
 
 ### Edmonds-Karp
+
+- Drum de ameliorare este un drum de distanta minima in rețeaua reziduală - se găsește folosind BFS.
+
+```python
+def Edmonds_Karp(G(V, E), s, t):
+    for u, v in E:
+        f[u][v] = 0
+        f[v][u] = 0
+
+    while True:
+        path = bfs(G, s, t)  # Găsim o cale de ameliorare folosind BFS
+
+        if not path:  # Dacă nu mai există cale de ameliorare, ieșim
+            break
+
+        cap = min(c[u][v] - f[u][v] for u, v in path)  # Capacitatea reziduală minimă pe drumul de ameliorare
+
+        for u, v in path:
+            f[u][v] += cap  # Mărim fluxul pe arcul (u, v)
+            f[v][u] -= cap  # Mărim fluxul invers pe arcul (v, u)
+
+    # Encoding-ul fluxului final este arbitrar ales (poate fi si de la sursa la toti vecinii săi, de exemplu)
+    f = {(u, v): f[u][v] for u, v in E}  # Reținem fluxul final
+
+    return f
+
+def bfs(G, s, t):
+    visited = set()
+    queue = [s]
+    parent = {s: None}  # Păstrăm părinții pentru a reconstrui calea
+
+    while queue:
+        u = queue.pop(0)
+        if u == t:  # Am ajuns la destinație
+            break
+        for v in G[u]:  # Ne uităm la toți vecinii lui u
+            if v not in visited and c[u][v] > f[u][v]:
+                # Dacă v nu a fost vizitat și dacă există capacitate reziduală
+                visited.add(v)      # Vizităm nodul v
+                parent[v] = u       # Setăm părintele lui v ca u
+                queue.append(v)     # Adăugăm v în coada de procesat
+
+    if t not in parent:
+        # Dacă nu am găsit o cale până la t
+        return None
+
+    # Reconstruim calea de la s la t
+    path = []
+    v = t
+
+    while v is not None:
+        path.append((parent[v], v))
+        v = parent[v]
+
+    path.reverse()  # Inversăm calea pentru a fi de la s la t
+
+    return path
+```
 
 ### Aplicații
 
