@@ -71,8 +71,7 @@
     - nodul din care s-a ajuns în nodul u prima oară
 - tipuri de muchii:
     - directe: (u, v), c[u] = gri, c[v] = alb
-    - inverse: (u, v), c[u] = gri, c[v] = gri
-    - back-edge: (u, v), c[u] = gri, c[v] = gri, d[v] < d[u]
+    - back-edge/inverse: (u, v), c[u] = gri, c[v] = gri, d[u] > d[v]
     - inainte: (u, v), c[u] = gri, c[v] = negru, d[u] < d[v]
     - transversal: (u, v), c[u] = gri, c[v] = negru, d[u] > d[v]
 
@@ -792,11 +791,95 @@ def Prim(G, start):
 - Initial toate nodurile formeaza cate o multime si la fiecare pas se reunesc 2 multimi printr-o muchie.
 - Muchiile sunt considerate in ordinea costulurilor si sunt adaugate in arbore doar daca nu formeaza un ciclu.
 
+```python
+def Kruskal(G):
+    A = []  # Arborele minim de acoperire
+    for u in G:
+        make_set(u)  # Creăm mulțimi disjuncte pentru fiecare nod
+    edges = sorted(G.edges(), key=lambda e: e[2])  # Sortăm muchiile după cost
+    for u, v, cost in edges:
+        if find_set(u) != find_set(v):  # Verificăm dacă u și v sunt în mulțimi diferite
+            union(u, v)  # Unim cele două mulțimi
+            A.append((u, v, cost))  # Adăugăm muchia în arborele minim de acoperire
+    return A  # Returnăm arborele minim de acoperire
+```
+
+- Complexitate: O(m * log m), unde m este numărul de muchii din graf (sortarea muchiilor), depinde de implementarea mulțimilor disjuncte.
+- Disjoint Set Union (DSU) pentru a gestiona mulțimile disjuncte:
+    - `make_set(u)` - creează o mulțime pentru nodul u - O(1)
+    - `find_set(u)` - găsește reprezentantul mulțimii din care face parte u - O(log n) amortizat
+    - `union(u, v)` - unește mulțimile din care fac parte u și v. - O(log n) amortizat
+- Algoritmul lui Kruskal este mai eficient pentru grafuri rare, în timp ce Prim este mai eficient pentru grafuri dense.
+
+#### Aplicații
+
+- K-clustering: impartirea nodurilor in k grupuri a.i. obiectele din cadrul unui grup sa fie "apropiate" considerand o "distanta" data.
+- Utilizat in clasificare si cautari
+- Dandu-se un intreg K, si un grup de obiecte, se cere sa se imparta grupul de obiecte in k grupuri a.i. distanta dintre grupuri sa fie maxima.
+- Exemplul din curs? (C9 slide 60)
+
 ### Multimi disjuncte
+
+TBD
 
 ## Fluxuri maxime
 
+- G = graf orientat
+- Sursa (`s`) si destinatie/scurgere/drena (`t`).
+- f(u, v) - fluxul de la u la v
+- c(u, v) - capacitatea de la u la v
+- f(u, v) <= c(u, v) - fluxul nu poate depăși capacitatea
+- f(u, v) >= 0 - fluxul nu poate fi negativ
+- f(u, v) + f(v, u) = 0 - fluxul este conservativ (nu se pierde fluxul)
+- X, Y - mulțimi de noduri
+    - f(X, X) = 0 - nu există flux în bucle
+    - f(X, Y) = -f(Y, X) - fluxul este conservativ între două mulțimi de noduri
+    - f(X \ Y, Z) f(X, Z) - f(Y, Z)
+    - f(X U Y, Z) = f(X, Z) + f(Y, Z)
+    - f(X, Y \ Z) = f(X, Y) - f(Z, Y)
+- f(s, V) = f(V, t)
+- Notatie per arc: **f/c**
+- Arc rezidual: f(u, v) < c(u, v) - arc cu flux rezidual (se poate mari fluxul)
+- capacitatea reziduala: c(u, v) - f(u, v) - capacitatea de a adăuga flux suplimentar pe arc
+- Retea reziduala: retea de flux formată din arcele reziduale, adică arcele pentru care se poate adăuga flux suplimentar.
+- Cale reziduala: o cale de la sursa `s` la scurgere `t` în rețeaua reziduală, adică o cale care are capacitate reziduală pozitivă pe toate arcele sale.
+- Capacitatea reziduală a unei căi: capacitatea reziduala minima de pe calea s..t descoperită.
+- Exemple C10, slide 16/17
+- Taieturi in retele de flux:
+    - o taietura (S, T) a unei retele de flux G = partitionare a nodurilor in 2 multimi disjuncte S si T = V - S a.i. sursa `s` este in S si scurgerea `t` este in T.
+    - fluxul prin taietura f(S, T) = suma fluxurilor de la nodurile din S la nodurile din T.
+    - capacitatea taieturii c(S, T) = suma capacitatilor arcelor de la nodurile din S la nodurile din T.
+    - fie S, T o taietura oarecare, fluxul maxim |f| este limitat de capacitatea taieturii: |f| <= c(S, T).
+
+### Surse multiple, scurgeri multiple
+
+- Adaugam un nod sursa `s` cu arce de capacitate infinita catre toate sursele si flux egal cu fluxul generat de sursele respective.
+- Adaugam un nod destinatie `t` cu arce de capacitate infinita catre toate scurgerile si flux egal cu fluxul care intra in scurgerile respective.
+
 ### Ford-Fulkerson
+
+- Abordare Greedy
+- Repeta cat timp exista un drum de ameliorare (mareste fluxul de-a lungul drumului de ameliorare cu capacitatea reziduală minimă a arcelor de pe acel drum).
+
+```python
+def ford_fulkerson(G(V, E), s, t):
+    # Inițializăm fluxul la 0 pentru toate arcele
+    for u, v in E:
+        f[u][v] = 0
+        f[v][u] = 0
+
+    while drum_de_ameliorare(s, t, p): # O(fmax)
+        cap = min(c[u][v] - f[u][v] for u, v in p)  # Capacitatea reziduală minimă pe drumul de ameliorare
+        for u, v in p:
+            f[u][v] += cap  # Mărim fluxul pe arcul (u, v)
+            f[v][u] -= cap  # Mărim fluxul invers pe arcul (v, u)
+
+    f = {(u, v): f[u][v] for u, v in E}  # Reținem fluxul final
+
+    return f
+```
+
+- Complexitate: O(fmax * m), unde fmax este fluxul maxim și m este numărul de arce din graf.
 
 ### Edmonds-Karp
 
