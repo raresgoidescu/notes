@@ -220,6 +220,7 @@ O ordonare liniară a nodurilor unui graf astfel încât pentru fiecare arc `(u,
 
 ### Algoritmul lui Kahn
 
+- DAG
 - [YouTube](https://www.youtube.com/watch?v=cIBFEhD77b4)
 
 **Descriere**:
@@ -343,6 +344,8 @@ def kosaraju(G, V):
 ```
 
 #### Algoritmul lui Tarjan pentru CTC
+
+- **Condiții**: **Graf orientat**.
 
 **Descriere**:
 Folosește o singură parcurgere DFS. Menține o stivă cu nodurile vizitate și calculează pentru fiecare nod `u` o valoare `low_link[u]`, care este cel mai mic timp de descoperire accesibil din `u` (inclusiv prin el însuși) printr-o muchie de întoarcere. Un nod `u` este rădăcina unei CTC dacă `discovery_time[u] == low_link[u]`. Când o astfel de rădăcină este găsită, toate nodurile de pe stivă până la `u` (inclusiv) formează o CTC.
@@ -689,7 +692,7 @@ Găsirea drumului de cost minim între oricare două noduri din graf.
 
 #### Algoritmul Floyd-Warshall
 
-**Condiții**: Graf orientat sau neorientat, ponderat. Permite ponderi negative, dar **fără cicluri de cost negativ**.
+**Condiții**: Graf orientat, ponderat. Permite ponderi negative, dar **fără cicluri de cost negativ**.
 
 **Descriere (Programare Dinamică)**:
 - Utilizează o matrice `dist[i][j]` pentru a stoca distanța minimă de la `i` la `j`.
@@ -757,7 +760,7 @@ def transitive_closure(G):
 
 #### Algoritmul lui Johnson
 
-**Condiții**: Graf orientat sau neorientat, ponderat, **fără cicluri de cost negativ**. **Eficient pentru grafuri rare**.
+**Condiții**: Graf orientat, ponderat, **fără cicluri de cost negativ**. **Eficient pentru grafuri rare**.
 
 **Descriere**:
 1. Creează un nou graf `G'` adăugând un nod sursă fictiv `s` și arce de la `s` la toate celelalte noduri cu pondere 0.
