@@ -2,7 +2,7 @@
 
 ## Cuprins
 
-- [Programare Dinamica]
+- [Programare Dinamica](#programare-dinamică)
 - [Concepte de Bază](#concepte-de-bază)
     - [Tipuri de Grafuri](#tipuri-de-grafuri)
     - [Notații și Terminologie](#notații-și-terminologie)
@@ -63,7 +63,6 @@
 - Parantezare optima de matrice: Avem o secvență de matrice și vrem să găsim ordinea optimă de înmulțire pentru a minimiza numărul total de operații.
     - `dp[i][j]` = costul minim pentru a înmulți matricele de la `i` la `j`.
     - `dp[i][j] = min(dp[i][k] + dp[k+1][j] + cost(i, k, j))` pentru toate `k` între `i` și `j-1`, unde `cost(i, k, j)` este costul de înmulțire a matricelor.
-- Arbori optimi de cautare (AOC): 
 
 ## Concepte de Bază
 
