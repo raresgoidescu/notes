@@ -952,7 +952,25 @@ def bfs(G, s, t):
 
 ### Aplicații
 
-### (Pompare) Preflux
+#### Cuplaj maxim in grafuri bipartite
+
+- G = graf bipartit - G(L U R, E)
+- M inclus sau egal cu E, cuplaj daca fiecare nod apare in cel mult o muchie din M
+- Cuplaj maxim = ? (**TODO**: Ask Toma)
+
+#### Drumuri disjuncte
+
+- G(V, E) - graf **TODO**
+- Numarul maxim de drumuri disjuncte de la nodul sursa `s` la nodul `t` este echivalent cu fluxul maxim de la `s` la `t`, asignand capacitatea unitara (1/c) pentru fiecare arc din graf.
+
+#### Conectivitate in grafuri
+
+- G(V, E) - graf **orientat**
+- Numarul minim de muchii care trebuie eliminate pentru a deconecta sursa `s` de scurgerea `t` este echivalent cu numarul maxim de drumuri disjuncte de la `s` la `t`, care este echivalent cu fluxul maxim de la `s` la `t`.
+
+### (Pompare) Preflux (Push-Relabel)
+
+
 
 ## TIPS & TRICKS
 
